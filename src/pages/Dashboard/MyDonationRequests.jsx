@@ -5,8 +5,6 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-
-
 const MyDonationRequests = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
@@ -14,6 +12,7 @@ const MyDonationRequests = () => {
 
     const [statusFilter, setStatusFilter] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedRequest, setSelectedRequest] = useState(null); // for modal
     const pageSize = 5; // items per page
 
     const {
@@ -137,20 +136,24 @@ const MyDonationRequests = () => {
                         (status) => (
                             <button
                                 key={status}
-                                className={`btn btn-sm ${statusFilter === status ? "btn-primary" : "btn-outline"
+                                className={`btn btn-sm ${statusFilter === status
+                                        ? "btn-primary"
+                                        : "btn-outline"
                                     }`}
                                 onClick={() => handleStatusFilterChange(status)}
                             >
                                 {status === "all"
                                     ? "All"
-                                    : status.charAt(0).toUpperCase() + status.slice(1)}
+                                    : status.charAt(0).toUpperCase() +
+                                    status.slice(1)}
                             </button>
                         )
                     )}
                 </div>
 
                 <p className="text-sm text-gray-500">
-                    Showing {paginatedRequests.length} of {filteredRequests.length} requests
+                    Showing {paginatedRequests.length} of{" "}
+                    {filteredRequests.length} requests
                 </p>
             </div>
 
@@ -173,27 +176,39 @@ const MyDonationRequests = () => {
                     <tbody>
                         {isLoading && (
                             <tr>
-                                <td colSpan="9" className="text-center py-6">
+                                <td
+                                    colSpan="9"
+                                    className="text-center py-6"
+                                >
                                     Loading...
                                 </td>
                             </tr>
                         )}
 
-                        {!isLoading && paginatedRequests.length === 0 && (
-                            <tr>
-                                <td colSpan="9" className="text-center py-6">
-                                    No donation requests found.
-                                </td>
-                            </tr>
-                        )}
+                        {!isLoading &&
+                            paginatedRequests.length === 0 && (
+                                <tr>
+                                    <td
+                                        colSpan="9"
+                                        className="text-center py-6"
+                                    >
+                                        No donation requests found.
+                                    </td>
+                                </tr>
+                            )}
 
                         {!isLoading &&
                             paginatedRequests.map((request, index) => (
                                 <tr key={request._id}>
-                                    <td>{(currentPage - 1) * pageSize + index + 1}</td>
+                                    <td>
+                                        {(currentPage - 1) * pageSize +
+                                            index +
+                                            1}
+                                    </td>
                                     <td>{request.recipientName}</td>
                                     <td>
-                                        {request.recipientDistrict}, {request.recipientUpazila}
+                                        {request.recipientDistrict},{" "}
+                                        {request.recipientUpazila}
                                     </td>
                                     <td>{request.donationDate}</td>
                                     <td>{request.donationTime}</td>
@@ -202,15 +217,20 @@ const MyDonationRequests = () => {
 
                                     {/* Donor info (when inprogress) */}
                                     <td>
-                                        {request.status === "inprogress" && request.donorName ? (
+                                        {request.status === "inprogress" &&
+                                            request.donorName ? (
                                             <div>
-                                                <div className="font-medium">{request.donorName}</div>
+                                                <div className="font-medium">
+                                                    {request.donorName}
+                                                </div>
                                                 <div className="text-xs text-gray-500">
                                                     {request.donorEmail}
                                                 </div>
                                             </div>
                                         ) : (
-                                            <span className="text-xs text-gray-400">N/A</span>
+                                            <span className="text-xs text-gray-400">
+                                                N/A
+                                            </span>
                                         )}
                                     </td>
 
@@ -218,36 +238,48 @@ const MyDonationRequests = () => {
                                     <td>
                                         <div className="flex flex-col gap-1">
                                             {/* Done / Cancel buttons only while status === inprogress */}
-                                            {request.status === "inprogress" && (
-                                                <div className="flex gap-1">
-                                                    <button
-                                                        className="btn btn-xs btn-success"
-                                                        onClick={() => updateStatus(request, "done")}
-                                                    >
-                                                        Done
-                                                    </button>
-                                                    <button
-                                                        className="btn btn-xs btn-error"
-                                                        onClick={() =>
-                                                            updateStatus(request, "canceled")
-                                                        }
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            )}
+                                            {request.status ===
+                                                "inprogress" && (
+                                                    <div className="flex gap-1">
+                                                        <button
+                                                            className="btn btn-xs btn-success"
+                                                            onClick={() =>
+                                                                updateStatus(
+                                                                    request,
+                                                                    "done"
+                                                                )
+                                                            }
+                                                        >
+                                                            Done
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-xs btn-error"
+                                                            onClick={() =>
+                                                                updateStatus(
+                                                                    request,
+                                                                    "canceled"
+                                                                )
+                                                            }
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                )}
 
                                             <div className="flex gap-1 mt-1">
+                                                {/* VIEW opens modal now */}
                                                 <button
                                                     className="btn btn-xs btn-info"
                                                     onClick={() =>
-                                                        navigate(
-                                                            `/dashboard/donation-requests/${request._id}`
+                                                        setSelectedRequest(
+                                                            request
                                                         )
                                                     }
                                                 >
                                                     View
                                                 </button>
+
+                                                {/* EDIT still navigates */}
                                                 <button
                                                     className="btn btn-xs btn-warning"
                                                     onClick={() =>
@@ -258,9 +290,13 @@ const MyDonationRequests = () => {
                                                 >
                                                     Edit
                                                 </button>
+
+                                                {/* DELETE works as before */}
                                                 <button
                                                     className="btn btn-xs btn-outline btn-error"
-                                                    onClick={() => handleDelete(request)}
+                                                    onClick={() =>
+                                                        handleDelete(request)
+                                                    }
                                                 >
                                                     Delete
                                                 </button>
@@ -274,37 +310,136 @@ const MyDonationRequests = () => {
             </div>
 
             {/* Pagination */}
-            {!isLoading && filteredRequests.length > pageSize && (
-                <div className="flex justify-center items-center gap-2 mt-4">
-                    <button
-                        className="btn btn-xs"
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage((prev) => prev - 1)}
-                    >
-                        Prev
-                    </button>
+            {!isLoading &&
+                filteredRequests.length > pageSize && (
+                    <div className="flex justify-center items-center gap-2 mt-4">
+                        <button
+                            className="btn btn-xs"
+                            disabled={currentPage === 1}
+                            onClick={() =>
+                                setCurrentPage((prev) => prev - 1)
+                            }
+                        >
+                            Prev
+                        </button>
 
-                    {Array.from({ length: totalPages }, (_, idx) => idx + 1).map(
-                        (page) => (
+                        {Array.from(
+                            { length: totalPages },
+                            (_, idx) => idx + 1
+                        ).map((page) => (
                             <button
                                 key={page}
-                                className={`btn btn-xs ${currentPage === page ? "btn-primary" : "btn-outline"
+                                className={`btn btn-xs ${currentPage === page
+                                        ? "btn-primary"
+                                        : "btn-outline"
                                     }`}
                                 onClick={() => setCurrentPage(page)}
                             >
                                 {page}
                             </button>
-                        )
-                    )}
+                        ))}
 
-                    <button
-                        className="btn btn-xs"
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage((prev) => prev + 1)}
-                    >
-                        Next
-                    </button>
-                </div>
+                        <button
+                            className="btn btn-xs"
+                            disabled={currentPage === totalPages}
+                            onClick={() =>
+                                setCurrentPage((prev) => prev + 1)
+                            }
+                        >
+                            Next
+                        </button>
+                    </div>
+                )}
+
+            {/* View Modal */}
+            {selectedRequest && (
+                <dialog
+                    className="modal modal-open"
+                    onClick={(e) => {
+                        // close on backdrop click
+                        if (e.target === e.currentTarget) {
+                            setSelectedRequest(null);
+                        }
+                    }}
+                >
+                    <div className="modal-box max-w-lg">
+                        <h3 className="font-bold text-lg mb-3">
+                            Donation Request Details
+                        </h3>
+
+                        <div className="space-y-1 text-sm">
+                            <p>
+                                <span className="font-semibold">
+                                    Recipient:
+                                </span>{" "}
+                                {selectedRequest.recipientName}
+                            </p>
+                            <p>
+                                <span className="font-semibold">
+                                    Location:
+                                </span>{" "}
+                                {selectedRequest.recipientDistrict},{" "}
+                                {selectedRequest.recipientUpazila}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Date:</span>{" "}
+                                {selectedRequest.donationDate}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Time:</span>{" "}
+                                {selectedRequest.donationTime}
+                            </p>
+                            <p>
+                                <span className="font-semibold">
+                                    Blood Group:
+                                </span>{" "}
+                                {selectedRequest.bloodGroup}
+                            </p>
+                            <p className="flex items-center gap-2">
+                                <span className="font-semibold">
+                                    Status:
+                                </span>
+                                {renderStatusBadge(selectedRequest.status)}
+                            </p>
+
+                            {selectedRequest.status === "inprogress" &&
+                                selectedRequest.donorName && (
+                                    <>
+                                        <p>
+                                            <span className="font-semibold">
+                                                Donor Name:
+                                            </span>{" "}
+                                            {selectedRequest.donorName}
+                                        </p>
+                                        <p>
+                                            <span className="font-semibold">
+                                                Donor Email:
+                                            </span>{" "}
+                                            {selectedRequest.donorEmail}
+                                        </p>
+                                    </>
+                                )}
+
+                            {selectedRequest.additionalInfo && (
+                                <p>
+                                    <span className="font-semibold">
+                                        Additional Info:
+                                    </span>{" "}
+                                    {selectedRequest.additionalInfo}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="modal-action">
+                            <button
+                                className="btn"
+                                onClick={() => setSelectedRequest(null)}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </dialog>
             )}
         </div>
     );
