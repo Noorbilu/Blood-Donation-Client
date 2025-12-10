@@ -2,15 +2,18 @@ import { createBrowserRouter } from "react-router";
 import RootLayout from "../layout/RootLayout";
 import Home from "../pages/Home/Home";
 import AuthLayout from "../layout/AuthLayout";
-import Search from "../pages/PublicPage/Search";
 import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
-import DashboardHome from "../pages/Dashboard/DashBoardHome/DashboardHome";
+import Register from "../pages/Auth/register";
+import Search from "../pages/PublicPage/Search";
+import DashboardLayout from "../layout/DashBoardLayout";
 import PrivateRoute from "./PrivateRoute";
-import DashboardLayout from "../layout/DashboardLayout";
-import Funding from "../pages/Funding/Funding";
+import DashboardHome from "../pages/Dashboard/DashBoardHome/DashboardHome";
 import CreateDonationRequest from "../pages/Dashboard/CreateDonationRequest";
+import MydDnationRequests from "../pages/Dashboard/MyDonationRequests";
+import Funding from "../pages/Funding/Funding";
+import DonorDashboardHome from "../pages/Dashboard/DashBoardHome/DonorDashboardHome";
 import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
+import EditDonationRequest from "../pages/Dashboard/EditDonationRequest";
 
 export const router = createBrowserRouter([
   {
@@ -69,7 +72,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: DashboardHome,
+        Component: DonorDashboardHome,
       },
       {
         path: "create-donation-request",
@@ -88,6 +91,26 @@ export const router = createBrowserRouter([
         path: "my-donation-requests",
         Component: MyDonationRequests,
       },
+      {
+        path: "edit-donation-request/:id",
+        Component: EditDonationRequest,
+        loader: async ({ params }) => {
+          const { id } = params;
+
+          const donation = await fetch(
+            `http://localhost:3000/donation-requests/${id}`
+          ).then((res) => res.json());
+
+          const districts = await fetch("/districts.json").then((res) =>
+            res.json()
+          );
+          const upazilas = await fetch("/upazilas.json").then((res) =>
+            res.json()
+          );
+
+          return { donation, districts, upazilas };
+        },
+      },
     ],
-  },
+  }
 ]);

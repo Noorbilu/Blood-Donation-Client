@@ -4,7 +4,7 @@ import Logo from '../../Components/logo';
 
 const Footer = () => {
     return (
-        <footer className="footer footer-horizontal text-red-300 footer-center p-10">
+        <footer className="footer footer-horizontal text-secondary footer-center p-10">
             <aside className=''>
                 <div className='w-22 h-22 mr-26'>
                     <Logo ></Logo>
@@ -17,7 +17,7 @@ const Footer = () => {
                 <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
             </aside>
             <nav>
-                <div className="grid grid-flow-col gap-4 text-red-500">
+                <div className="grid grid-flow-col gap-4">
                     <a>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
