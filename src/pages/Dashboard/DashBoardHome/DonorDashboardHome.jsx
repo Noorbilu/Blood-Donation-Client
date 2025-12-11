@@ -1,16 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-
-
 const DonorDashboardHome = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
+
+    const [selectedRequest, setSelectedRequest] = useState(null); // modal state
 
     const {
         data: requests = [],
@@ -205,16 +205,14 @@ const DonorDashboardHome = () => {
                                                 )}
 
                                                 <div className="flex gap-1 mt-1">
+                                                    {/* VIEW now opens modal instead of navigating */}
                                                     <button
                                                         className="btn btn-xs btn-info"
-                                                        onClick={() =>
-                                                            navigate(
-                                                                `/dashboard/donation-requests/${request._id}`
-                                                            )
-                                                        }
+                                                        onClick={() => setSelectedRequest(request)}
                                                     >
                                                         View
                                                     </button>
+
                                                     <button
                                                         className="btn btn-xs btn-warning"
                                                         onClick={() =>
@@ -240,6 +238,80 @@ const DonorDashboardHome = () => {
                         </table>
                     </div>
                 </section>
+            )}
+
+            {/* View Modal (same style as MyDonationRequests) */}
+            {selectedRequest && (
+                <dialog
+                    className="modal modal-open"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) setSelectedRequest(null);
+                    }}
+                >
+                    <div className="modal-box max-w-lg">
+                        <h3 className="font-bold text-lg mb-3">
+                            Donation Request Details
+                        </h3>
+
+                        <div className="space-y-1 text-sm">
+                            <p>
+                                <span className="font-semibold">Recipient:</span>{" "}
+                                {selectedRequest.recipientName}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Location:</span>{" "}
+                                {selectedRequest.recipientDistrict},{" "}
+                                {selectedRequest.recipientUpazila}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Date:</span>{" "}
+                                {selectedRequest.donationDate}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Time:</span>{" "}
+                                {selectedRequest.donationTime}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Blood Group:</span>{" "}
+                                {selectedRequest.bloodGroup}
+                            </p>
+                            <p className="flex items-center gap-2">
+                                <span className="font-semibold">Status:</span>
+                                {renderStatusBadge(selectedRequest.status)}
+                            </p>
+
+                            {selectedRequest.status === "inprogress" &&
+                                selectedRequest.donorName && (
+                                    <>
+                                        <p>
+                                            <span className="font-semibold">Donor Name:</span>{" "}
+                                            {selectedRequest.donorName}
+                                        </p>
+                                        <p>
+                                            <span className="font-semibold">Donor Email:</span>{" "}
+                                            {selectedRequest.donorEmail}
+                                        </p>
+                                    </>
+                                )}
+
+                            {selectedRequest.requestMessage && (
+                                <p>
+                                    <span className="font-semibold">Message:</span>{" "}
+                                    {selectedRequest.requestMessage}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="modal-action">
+                            <button
+                                className="btn"
+                                onClick={() => setSelectedRequest(null)}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </dialog>
             )}
         </div>
     );
