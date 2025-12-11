@@ -92,7 +92,9 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Dashboard Home</span>
               </NavLink>
             </li>
-
+            <li>
+              <NavLink to="/dashboard/profile">Profile</NavLink>
+            </li>
             {/* LOADING state */}
             {roleLoading && (
               <li>

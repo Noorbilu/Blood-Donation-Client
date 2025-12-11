@@ -20,6 +20,7 @@ import AllDonationRequests from "../pages/Dashboard/Admin/AllDonationRequests";
 import DashboardLayout from "../layout/DashboardLayout";
 import DonationRequests from "../pages/PublicPage/DonationRequests";
 import DonationRequestDetails from "../pages/PublicPage/DonationRequestDetails";
+import Profile from "../pages/Dashboard/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -134,6 +135,20 @@ export const router = createBrowserRouter([
           );
 
           return { donation, districts, upazilas };
+        },
+
+      },
+      {
+        path: "profile",
+        Component: Profile,
+        loader: async () => {
+          const districts = await fetch("/districts.json").then((res) =>
+            res.json()
+          );
+          const upazilas = await fetch("/upazilas.json").then((res) =>
+            res.json()
+          );
+          return { districts, upazilas };
         },
       },
 
