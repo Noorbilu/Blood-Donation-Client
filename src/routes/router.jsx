@@ -18,6 +18,8 @@ import VolunteerRoute from "./VolunteerRoute";
 import AllUsers from "../pages/Dashboard/Admin/AllUsers";
 import AllDonationRequests from "../pages/Dashboard/Admin/AllDonationRequests";
 import DashboardLayout from "../layout/DashboardLayout";
+import DonationRequests from "../pages/PublicPage/DonationRequests";
+import DonationRequestDetails from "../pages/PublicPage/DonationRequestDetails";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,27 @@ export const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { index: true, Component: Home },
+
+      {
+        path: "donation-requests",      // public list page
+        Component: DonationRequests,
+      },
+      {
+        path: "donation-requests/:id",  // private details page
+        element: (
+          <PrivateRoute>
+            <DonationRequestDetails />
+          </PrivateRoute>
+        ),
+        loader: async ({ params }) => {
+          const { id } = params;
+          const donation = await fetch(
+            `http://localhost:3000/donation-requests/${id}`
+          ).then((res) => res.json());
+          return { donation };
+        },
+      },
+
       {
         path: "search",
         Component: Search,

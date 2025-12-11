@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Link, NavLink } from "react-router";
 import Logo from "../../Components/logo";
 import useAuth from "../../hooks/useAuth";
@@ -9,39 +8,39 @@ const Navbar = () => {
   const { user, logOut } = useAuth();
 
   const handleLogout = () => {
-    logOut()
-      .then()
-      .catch((error) => {
-        console.log(error);
-      });
+    logOut().catch((error) => {
+      console.log(error);
+    });
   };
 
+  // center menu links
   const links = (
     <>
+      {/* সবসময় থাকবে */}
       <li>
-        <NavLink to="/dashboard/create-donation-request">Donation request</NavLink>
+        <NavLink to="/donation-requests">Donation Requests</NavLink>
       </li>
 
+      {/* funding শুধু logged in হলে */}
       {user && (
-        <>
-          <li>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-          </li>
-          <li>
-            <NavLink to="/funding">Funding</NavLink>
-          </li>
-        </>
+        <li>
+          <NavLink to="/funding">Funding</NavLink>
+        </li>
       )}
-      <li>
-        <NavLink to="">About Us</NavLink>
-      </li>
     </>
   );
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
+      {/* LEFT: Logo */}
       <div className="navbar-start">
+        {/* Mobile menu toggle */}
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost lg:hidden"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -49,35 +48,39 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
-              />{" "}
+              />
             </svg>
           </div>
           <ul
-            tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            tabIndex={-1}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
             {links}
           </ul>
         </div>
-        <a className="text-xl">
-          <Logo></Logo>
-        </a>
+
+        <Link to="/" className="text-xl font-bold">
+          <Logo />
+        </Link>
       </div>
+
+      {/* CENTER: links */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
+
+      {/* RIGHT: auth */}
       <div className="navbar-end">
-        <div className="navbar-end flex items-center gap-4">
-          {/* If user not logged in */}
+        <div className="flex items-center gap-4">
+          {/* Logged out: শুধু Login */}
           {!user && (
             <>
-              <Link className="btn" to="/login">
+              <Link className="btn btn-primary" to="/login">
                 Login
               </Link>
               <div className="w-10 h-10 rounded-full overflow-hidden">
@@ -86,10 +89,13 @@ const Navbar = () => {
             </>
           )}
 
-          {/* If user is logged in */}
+          {/* Logged in: avatar dropdown (Dashboard, Logout) */}
           {user && (
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <label
+                tabIndex={0}
+                className="btn btn-ghost btn-circle avatar"
+              >
                 <div className="w-10 rounded-full">
                   <img src={user.photoURL || userimg} alt="User Avatar" />
                 </div>
@@ -98,8 +104,11 @@ const Navbar = () => {
                 tabIndex={0}
                 className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
               >
+                <li className="mb-1 px-2 text-sm text-gray-500">
+                  {user.displayName || user.email}
+                </li>
                 <li>
-                  <NavLink to="/">Profile</NavLink>
+                  <NavLink to="/dashboard">Dashboard</NavLink>
                 </li>
                 <li>
                   <button onClick={handleLogout}>Logout</button>
