@@ -86,7 +86,7 @@ const Login = () => {
       </form>
 
       <p className="text-center text-sm mt-4">
-        New to RedHope?
+        New to Blood Donation?
         <Link
           state={location.state}
           className="text-blue-400 underline ml-1"
