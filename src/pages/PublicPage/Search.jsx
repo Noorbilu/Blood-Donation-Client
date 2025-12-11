@@ -12,7 +12,7 @@ const Search = () => {
         upazilaId: "",
     });
 
-    const [requests, setRequests] = useState([]);
+    const [donors, setDonors] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
     const [error, setError] = useState("");
@@ -20,7 +20,7 @@ const Search = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Reset upazila when district changes
+        // District change হলে upazila reset
         if (name === "districtId") {
             setForm((prev) => ({
                 ...prev,
@@ -53,28 +53,27 @@ const Search = () => {
         const upazila = filteredUpazilas.find((u) => u.id === form.upazilaId);
 
         try {
-            const query = new URLSearchParams({
+            const params = new URLSearchParams({
+                role: "donor",
+                status: "active",
                 bloodGroup: form.bloodGroup,
                 district: district?.name || "",
                 upazila: upazila?.name || "",
             }).toString();
 
-            // Adjust base URL to your setup (env/baseURL/etc.)
-            const res = await fetch(
-                `http://localhost:${import.meta.env.VITE_PORT || 3000}/donation-requests?${query}`
-                // or simply: `http://localhost:3000/donation-requests?${query}`
-            );
+            const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+            const res = await fetch(`${baseURL}/users?${params}`);
 
             if (!res.ok) {
-                throw new Error("Failed to fetch donation requests");
+                throw new Error("Failed to fetch donors");
             }
 
             const data = await res.json();
-            setRequests(data);
+            setDonors(data);
         } catch (err) {
             console.error(err);
             setError("Could not fetch data. Please try again.");
-            setRequests([]);
+            setDonors([]);
         } finally {
             setIsSearching(false);
         }
@@ -177,53 +176,58 @@ const Search = () => {
             {hasSearched && (
                 <div className="mt-8">
                     {isSearching && (
-                        <p className="text-center text-gray-500">Searching...</p>
+                        <p className="text-center text-gray-500">Searching donors...</p>
                     )}
 
-                    {!isSearching && requests.length === 0 && !error && (
+                    {!isSearching && donors.length === 0 && !error && (
                         <p className="text-center text-gray-500">
-                            No matching donation requests found.
+                            No donors found for this criteria.
                         </p>
                     )}
 
-                    {!isSearching && requests.length > 0 && (
+                    {!isSearching && donors.length > 0 && (
                         <>
                             <h2 className="text-xl font-semibold mb-4">
-                                Found {requests.length} request
-                                {requests.length > 1 ? "s" : ""}
+                                Found {donors.length} donor
+                                {donors.length > 1 ? "s" : ""}
                             </h2>
 
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                {requests.map((req) => (
+                                {donors.map((donor) => (
                                     <div
-                                        key={req._id}
+                                        key={donor._id}
                                         className="card bg-base-100 shadow-sm border"
                                     >
                                         <div className="card-body">
-                                            <h3 className="card-title text-lg">
-                                                {req.recipientName || "Recipient"}
-                                            </h3>
+                                            <div className="flex items-center gap-3 mb-2">
+                                                {donor.avatar && (
+                                                    <div className="avatar">
+                                                        <div className="w-12 rounded-full">
+                                                            <img src={donor.avatar} alt={donor.name} />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <h3 className="card-title text-lg">
+                                                        {donor.name || "Donor"}
+                                                    </h3>
+                                                    {donor.email && (
+                                                        <p className="text-sm text-gray-500">
+                                                            {donor.email}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+
                                             <p>
                                                 <span className="font-semibold">Blood Group:</span>{" "}
-                                                {req.bloodGroup}
+                                                {donor.bloodGroup || "N/A"}
                                             </p>
                                             <p>
                                                 <span className="font-semibold">Location:</span>{" "}
-                                                {req.recipientDistrict}, {req.recipientUpazila}
+                                                {donor.district || "N/A"},{" "}
+                                                {donor.upazila || "N/A"}
                                             </p>
-                                            <p>
-                                                <span className="font-semibold">Date:</span>{" "}
-                                                {req.donationDate}
-                                            </p>
-                                            <p>
-                                                <span className="font-semibold">Time:</span>{" "}
-                                                {req.donationTime}
-                                            </p>
-                                            {req.status && (
-                                                <p className="text-sm text-gray-500">
-                                                    Status: {req.status}
-                                                </p>
-                                            )}
                                         </div>
                                     </div>
                                 ))}
