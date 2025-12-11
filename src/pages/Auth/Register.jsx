@@ -4,7 +4,9 @@ import { Link, useLocation, useNavigate, useLoaderData } from "react-router";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
-import SocialLogin from "./SocailLogin";
+
+
+const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const Register = () => {
   const {
@@ -29,27 +31,57 @@ const Register = () => {
     );
   };
 
-  const handleRegistration = (data) => {
-    const profileImg = data.photo[0];
-    registerUser(data.email, data.password)
-      .then(() => {
+  const handleRegistration = async (data) => {
+    try {
+      const profileImg = data.photo[0];
+
+      // 1) Firebase user তৈরি
+      const cred = await registerUser(data.email, data.password);
+      const fbUser = cred.user;
+
+      // 2) imgbb এ ছবি upload
+      let photoURL = "";
+      if (profileImg) {
         const formData = new FormData();
         formData.append("image", profileImg);
 
-        const image_API_URL = `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_image_host_key
-        }`;
-        axios.post(image_API_URL, formData).then((res) => {
-          const userProfile = {
-            displayName: data.name,
-            photoURL: res.data.data.url,
-          };
-          updateUserProfile(userProfile)
-            .then(() => navigate(location.state || "/"))
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((error) => console.log(error));
+        const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key
+          }`;
+
+        const imgRes = await axios.post(image_API_URL, formData);
+        photoURL = imgRes.data.data.url;
+      }
+
+      // 3) Firebase profile update
+      const userProfile = {
+        displayName: data.name,
+        photoURL,
+      };
+      await updateUserProfile(userProfile);
+
+      // 4) Backend এ user save
+      const selectedDistrict = districts.find((d) => d.id == data.district);
+
+      const newUser = {
+        name: data.name,
+        email: data.email,
+        avatar: photoURL,
+        bloodGroup: data.bloodGroup,
+        district: selectedDistrict?.name || "",
+        upazila: data.upazila,
+      };
+
+      console.log("New user to save:", newUser);
+
+      const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      await axios.post(`${baseURL}/users`, newUser);
+
+      // 5) success হলে dashboard এ পাঠাও
+      navigate(location.state || "/dashboard");
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert("Registration failed, check console for details.");
+    }
   };
 
   return (
@@ -82,6 +114,27 @@ const Register = () => {
           />
           {errors.photo && (
             <p className="text-red-500 text-sm mt-1">Photo is required.</p>
+          )}
+        </div>
+
+        {/* Blood Group */}
+        <div className="flex flex-col">
+          <label className="label font-medium">Blood Group</label>
+          <select
+            className="select select-bordered w-full rounded-lg"
+            {...register("bloodGroup", { required: true })}
+          >
+            <option value="">Select Blood Group</option>
+            {bloodGroups.map((bg) => (
+              <option key={bg} value={bg}>
+                {bg}
+              </option>
+            ))}
+          </select>
+          {errors.bloodGroup && (
+            <p className="text-red-500 text-sm mt-1">
+              Blood group is required.
+            </p>
           )}
         </div>
 
@@ -220,7 +273,6 @@ const Register = () => {
         </Link>
       </p>
 
-      <SocialLogin />
     </div>
   );
 };
