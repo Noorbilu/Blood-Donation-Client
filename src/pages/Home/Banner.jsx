@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
-import NewsTicker from "./NewsTicker";
+import News from "./News";
 
 const slides = [
   {
@@ -31,8 +31,8 @@ const Banner = () => {
   }, [paused]);
 
   return (
-    <div className="relative w-full bg-red-50 py-10">
-      <NewsTicker></NewsTicker>
+    <div className="relative w-full bg-red-50 ">
+      <News></News>
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -40,7 +40,7 @@ const Banner = () => {
         className="text-center mb-8 px-4"
       >
         
-        <h1 className="text-4xl md:text-6xl font-extrabold text-red-600">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-red-500">
           Donate Blood, Save Lives
         </h1>
         <p className="mt-4 text-lg text-red-800 font-semibold">

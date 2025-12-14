@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const NewsTicker = () => {
+const News = () => {
   return (
     <div className="w-full bg-red-300 overflow-hidden p-1 mb-3">
       <motion.div
@@ -19,4 +19,4 @@ const NewsTicker = () => {
   );
 };
 
-export default NewsTicker;
+export default News;

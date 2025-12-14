@@ -13,15 +13,12 @@ const Navbar = () => {
     });
   };
 
-  // center menu links
   const links = (
     <>
-      {/* সবসময় থাকবে */}
       <li>
         <NavLink to="/donation-requests">Donation Requests</NavLink>
       </li>
 
-      {/* funding শুধু logged in হলে */}
       {user && (
         <li>
           <NavLink to="/funding">Funding</NavLink>
@@ -32,9 +29,8 @@ const Navbar = () => {
 
   return (
     <div className="navbar bg-base-100 shadow-sm">
-      {/* LEFT: Logo */}
       <div className="navbar-start">
-        {/* Mobile menu toggle */}
+        
         <div className="dropdown">
           <div
             tabIndex={0}
@@ -74,10 +70,10 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
 
-      {/* RIGHT: auth */}
+      
       <div className="navbar-end">
         <div className="flex items-center gap-4">
-          {/* Logged out: শুধু Login */}
+          
           {!user && (
             <>
               <Link className="btn btn-primary" to="/login">
@@ -89,7 +85,6 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Logged in: avatar dropdown (Dashboard, Logout) */}
           {user && (
             <div className="dropdown dropdown-end">
               <label
