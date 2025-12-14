@@ -5,9 +5,10 @@ import { Link, NavLink, Outlet } from "react-router";
 import { IoCreateOutline } from "react-icons/io5";
 import { IoMdGitPullRequest } from "react-icons/io";
 import { SiGoogletasks } from "react-icons/si";
-import { FaUser } from "react-icons/fa";
+import { FaHome, FaUser } from "react-icons/fa";
 
 import useRole from "../hooks/useRole";
+import { CgProfile } from "react-icons/cg";
 
 const DashboardLayout = () => {
   const { role, roleLoading } = useRole();
@@ -88,12 +89,21 @@ const DashboardLayout = () => {
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Dashboard Home"
               >
-                <SiGoogletasks />
+                <FaHome />
                 <span className="is-drawer-close:hidden">Dashboard Home</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/profile">Profile</NavLink>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Profile"
+                to="/dashboard/profile"
+              >
+                <CgProfile />
+                <span className="is-drawer-close:hidden">
+                  Profile
+                </span>
+              </NavLink>
             </li>
             {/* LOADING state */}
             {roleLoading && (
