@@ -3,12 +3,13 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
-
+import Swal from "sweetalert2";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const { signInUser } = useAuth();
@@ -16,17 +17,28 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const password = watch("password");
 
   const handleLogin = (data) => {
     signInUser(data.email, data.password)
       .then((result) => {
-        console.log("Logged in user:", result.user);
-        // dashboard এ পাঠাই
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: `Welcome back, ${result.user.email}`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
         navigate(location?.state || "/dashboard");
       })
       .catch((error) => {
-        console.error(error);
-        alert("Login failed. Check your credentials.");
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Check your credentials and try again",
+        });
       });
   };
 
@@ -36,7 +48,7 @@ const Login = () => {
       <p className="text-center text-gray-500 mb-4">Please login</p>
 
       <form className="space-y-4" onSubmit={handleSubmit(handleLogin)}>
-        {/* Email Field */}
+        {/* Email */}
         <div className="flex flex-col">
           <label className="label font-medium">Email</label>
           <input
@@ -50,7 +62,7 @@ const Login = () => {
           )}
         </div>
 
-        {/* Password Field */}
+        {/* Password */}
         <div className="flex flex-col relative">
           <label className="label font-medium">Password</label>
           <input
@@ -76,13 +88,36 @@ const Login = () => {
           )}
         </div>
 
+        <div className="flex flex-col relative">
+          <label className="label font-medium">Confirm Password</label>
+          <input
+            type={showConfirm ? "text" : "password"}
+            {...register("confirmPassword", {
+              required: true,
+              validate: (value) => value === password || "Passwords do not match",
+            })}
+            className="input input-bordered w-full rounded-lg pr-10"
+            placeholder="Confirm Password"
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-9 text-gray-500"
+            onClick={() => setShowConfirm(!showConfirm)}
+          >
+            {showConfirm ? <FaEyeSlash /> : <FaEye />}
+          </button>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
+
         <div className="text-right">
           <span className="text-sm text-gray-400">Forgot password?</span>
         </div>
 
-        <button className="btn btn-neutral w-full mt-4 rounded-lg">
-          Login
-        </button>
+        <button className="btn btn-neutral w-full mt-4 rounded-lg">Login</button>
       </form>
 
       <p className="text-center text-sm mt-4">
