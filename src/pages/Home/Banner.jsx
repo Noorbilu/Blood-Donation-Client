@@ -6,15 +6,15 @@ import News from "./News";
 const slides = [
   {
     id: 1,
-    img: "https://i.ibb.co.com/vv4WLpQH/7325549.jpg",
+    img: "https://i.ibb.co.com/jPm0sdHz/8983180pic2.jpg",
   },
   {
     id: 2,
-    img: "https://i.ibb.co.com/B5DC4ySx/13960.jpg",
+    img: "https://i.ibb.co.com/ynf4M3WW/7148629.jpg",
   },
   {
     id: 3,
-    img: "https://i.ibb.co.com/LX7xXZMT/5326604.jpg",
+    img: "https://i.ibb.co.com/Jjpn7gXh/8114901picc.jpg",
   },
 ];
 

@@ -27,7 +27,7 @@ const Divider = () => {
       <div className="m-5 hidden md:block">
         <div className="border-t-2 border-dotted border-red-300 mb-6"></div>
       </div>
-      <h1 className="text-5xl font-bold text-red-700 text-center m-8 pb-4">Our Features</h1>
+      <h1 className="text-4xl font-bold text-red-700 text-center m-8 pb-4">Our Blood Donating Features</h1>
 
       <div className="max-w-6xl mx-auto px-4 space-y-10">
         {serviceData.map((item, index) => (
