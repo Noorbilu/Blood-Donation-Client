@@ -29,7 +29,7 @@ const Register = () => {
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasMinLength = password.length >= 6;
-    const hasSymbol = /[^A-Za-z0-9]/.test(password); // 🔥 special character
+    const hasSymbol = /[^A-Za-z0-9]/.test(password); 
 
     return hasUppercase && hasLowercase && hasMinLength && hasSymbol;
   };
@@ -105,7 +105,7 @@ const Register = () => {
       <p className="text-center text-gray-500 mb-4">Please Register</p>
 
       <form className="space-y-4" onSubmit={handleSubmit(handleRegistration)}>
-        {/* Name */}
+        
         <div>
           <input
             {...register("name", {
@@ -123,7 +123,6 @@ const Register = () => {
           )}
         </div>
 
-        {/* Photo */}
         <div>
           <input
             type="file"
@@ -135,7 +134,6 @@ const Register = () => {
           )}
         </div>
 
-        {/* Blood Group */}
         <select
           {...register("bloodGroup", { required: "Blood group is required" })}
           className="select select-bordered w-full"
@@ -153,7 +151,6 @@ const Register = () => {
           </p>
         )}
 
-        {/* District */}
         <select
           {...register("district", { required: "District is required" })}
           onChange={handleDistrictChange}
@@ -167,7 +164,6 @@ const Register = () => {
           ))}
         </select>
 
-        {/* Upazila */}
         <select
           {...register("upazila", { required: "Upazila is required" })}
           className="select select-bordered w-full"
@@ -181,7 +177,7 @@ const Register = () => {
           ))}
         </select>
 
-        {/* Email */}
+       
         <input
           type="email"
           {...register("email", { required: "Email is required" })}
@@ -189,7 +185,7 @@ const Register = () => {
           placeholder="Email"
         />
 
-        {/* Password */}
+        
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}

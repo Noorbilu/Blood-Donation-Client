@@ -1,4 +1,3 @@
-// src/pages/Dashboard/DashBoardHome/DashboardHome.jsx
 import React from "react";
 import useRole from "../../../hooks/useRole";
 import useAuth from "../../../hooks/useAuth";
@@ -21,7 +20,6 @@ const DashboardHome = () => {
     if (role === "admin") return <AdminDashboardHome />;
     if (role === "volunteer") return <VolunteerDashboardHome />;
 
-    // default donor
     return <DonorDashboardHome />;
 };
 

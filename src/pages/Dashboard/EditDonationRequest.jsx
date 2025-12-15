@@ -52,12 +52,8 @@ const EditDonationRequest = () => {
     };
 
     const onSubmit = async (data) => {
-        // requester info we trust from auth, overwrite if needed
         data.requesterName = user?.displayName || donation.requesterName;
         data.requesterEmail = user?.email || donation.requesterEmail;
-
-        // status ekhane change korchi na, jei status chilo oitai thakbe
-        // jodi change korte chao, alada field add korte paro
         try {
             const result = await Swal.fire({
                 title: "Update this request?",
@@ -97,13 +93,12 @@ const EditDonationRequest = () => {
                 className="mt-8 p-4 text-black"
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    {/* Left column */}
+              
                     <fieldset className="fieldset">
                         <h4 className="text-2xl font-semibold">
                             Requester & Recipient
                         </h4>
 
-                        {/* requester name (read only) */}
                         <label className="label">Requester Name</label>
                         <input
                             type="text"
@@ -112,7 +107,6 @@ const EditDonationRequest = () => {
                             className="input w-full"
                         />
 
-                        {/* requester email (read only) */}
                         <label className="label mt-4">Requester Email</label>
                         <input
                             type="email"
@@ -121,7 +115,6 @@ const EditDonationRequest = () => {
                             className="input w-full"
                         />
 
-                        {/* recipient name */}
                         <label className="label mt-4">Recipient Name</label>
                         <input
                             type="text"
@@ -130,7 +123,6 @@ const EditDonationRequest = () => {
                             placeholder="Recipient Name"
                         />
 
-                        {/* recipient district */}
                         <fieldset className="fieldset mt-4">
                             <legend className="fieldset-legend">
                                 Recipient District
@@ -150,7 +142,6 @@ const EditDonationRequest = () => {
                             </select>
                         </fieldset>
 
-                        {/* recipient upazila */}
                         <fieldset className="fieldset mt-4">
                             <legend className="fieldset-legend">
                                 Recipient Upazila
@@ -172,11 +163,9 @@ const EditDonationRequest = () => {
                         </fieldset>
                     </fieldset>
 
-                    {/* Right column */}
                     <fieldset className="fieldset">
                         <h4 className="text-2xl font-semibold">Donation Details</h4>
 
-                        {/* hospital name */}
                         <label className="label">Hospital Name</label>
                         <input
                             type="text"
@@ -185,7 +174,6 @@ const EditDonationRequest = () => {
                             placeholder="Hospital name"
                         />
 
-                        {/* full address */}
                         <label className="label mt-4">Full Address Line</label>
                         <input
                             type="text"
@@ -194,7 +182,6 @@ const EditDonationRequest = () => {
                             placeholder="Full address"
                         />
 
-                        {/* blood group */}
                         <fieldset className="fieldset mt-4">
                             <legend className="fieldset-legend">Blood Group</legend>
                             <select
@@ -215,7 +202,6 @@ const EditDonationRequest = () => {
                             </select>
                         </fieldset>
 
-                        {/* date & time */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <fieldset className="fieldset">
                                 <label className="label">Donation Date</label>
@@ -236,7 +222,6 @@ const EditDonationRequest = () => {
                             </fieldset>
                         </div>
 
-                        {/* request message */}
                         <label className="label mt-4">Request Message</label>
                         <textarea
                             {...register("requestMessage")}

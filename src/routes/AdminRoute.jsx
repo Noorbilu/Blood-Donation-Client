@@ -1,4 +1,3 @@
-// src/routes/AdminRoute.jsx
 import React from "react";
 import useAuth from "../hooks/useAuth";
 import useRole from "../hooks/useRole";
@@ -15,9 +14,9 @@ const AdminRoute = ({ children }) => {
       </div>
     );
   }
-
+  
   if (role !== "admin") {
-    return <Forbidden />;
+    return <Forbidden></Forbidden>;
   }
 
   return children;

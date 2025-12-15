@@ -48,7 +48,7 @@ const Login = () => {
       <p className="text-center text-gray-500 mb-4">Please login</p>
 
       <form className="space-y-4" onSubmit={handleSubmit(handleLogin)}>
-        {/* Email */}
+        
         <div className="flex flex-col">
           <label className="label font-medium">Email</label>
           <input
@@ -62,7 +62,6 @@ const Login = () => {
           )}
         </div>
 
-        {/* Password */}
         <div className="flex flex-col relative">
           <label className="label font-medium">Password</label>
           <input

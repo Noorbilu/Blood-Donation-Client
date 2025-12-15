@@ -14,7 +14,6 @@ const DonationRequests = () => {
     } = useQuery({
         queryKey: ["public-pending-requests"],
         queryFn: async () => {
-            // শুধু pending গুলো
             const res = await axiosSecure.get("/donation-requests", {
                 params: { status: "pending" },
             });

@@ -12,7 +12,6 @@ const Funding = () => {
   const [amount, setAmount] = useState("");
   const [creating, setCreating] = useState(false);
 
-  // সব funding load করা
   const {
     data: fundings = [],
     isLoading,
@@ -25,7 +24,6 @@ const Funding = () => {
     },
   });
 
-  // Stripe redirect success handle
   useEffect(() => {
     const sessionId = searchParams.get("session_id");
     if (!sessionId) return;
@@ -52,7 +50,6 @@ const Funding = () => {
           title: "Failed to confirm payment",
         });
       } finally {
-        // URL থেকে session_id query param remove
         setSearchParams({});
       }
     };
@@ -82,7 +79,6 @@ const Funding = () => {
       });
 
       if (data?.url) {
-        // Stripe checkout এ redirect
         window.location.href = data.url;
       } else {
         throw new Error("No checkout url received");
@@ -105,7 +101,6 @@ const Funding = () => {
         Funding & Donations
       </h1>
 
-      {/* Give fund form */}
       <div className="bg-base-100 shadow rounded-lg p-4 md:p-6 mb-8">
         <h2 className="text-lg font-semibold mb-2">Give Fund</h2>
         <p className="text-sm text-gray-500 mb-4">
@@ -140,8 +135,6 @@ const Funding = () => {
           </button>
         </form>
       </div>
-
-      {/* Funding table */}
       <div className="bg-base-100 shadow rounded-lg p-4 md:p-6">
         <h2 className="text-lg font-semibold mb-4">All Funds</h2>
 

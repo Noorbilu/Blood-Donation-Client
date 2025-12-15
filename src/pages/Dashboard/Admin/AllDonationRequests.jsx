@@ -1,5 +1,3 @@
-// src/pages/Dashboard/Admin/AllDonationRequests.jsx
-
 import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
@@ -12,9 +10,7 @@ const AllDonationRequests = () => {
 
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedRequest, setSelectedRequest] = useState(null); // modal
-
-  // সব request (admin সব manage করবে, তাই এখানে email filter নাই)
+  const [selectedRequest, setSelectedRequest] = useState(null); 
   const {
     data: requests = [],
     isLoading,
@@ -27,7 +23,6 @@ const AllDonationRequests = () => {
     },
   });
 
-  // status filter
   const filteredRequests = useMemo(() => {
     if (statusFilter === "all") return requests;
     return requests.filter((r) => r.status === statusFilter);
@@ -122,7 +117,6 @@ const AllDonationRequests = () => {
         </h1>
       </div>
 
-      {/* Filter */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex flex-wrap gap-2">
           {["all", "pending", "inprogress", "done", "canceled"].map(
@@ -150,7 +144,6 @@ const AllDonationRequests = () => {
         </p>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="table table-zebra">
           <thead>
@@ -196,7 +189,6 @@ const AllDonationRequests = () => {
                   <td>{request.bloodGroup}</td>
                   <td>{renderStatusBadge(request.status)}</td>
 
-                  {/* Donor info */}
                   <td>
                     {request.status === "inprogress" && request.donorName ? (
                       <div>
@@ -210,10 +202,8 @@ const AllDonationRequests = () => {
                     )}
                   </td>
 
-                  {/* Actions */}
                   <td>
                     <div className="flex flex-col gap-1">
-                      {/* PENDING: admin can move to inprogress or cancel */}
                       {request.status === "pending" && (
                         <div className="flex gap-1">
                           <button
@@ -235,7 +225,6 @@ const AllDonationRequests = () => {
                         </div>
                       )}
 
-                      {/* INPROGRESS: Done / Cancel */}
                       {request.status === "inprogress" && (
                         <div className="flex gap-1">
                           <button
@@ -255,7 +244,6 @@ const AllDonationRequests = () => {
                         </div>
                       )}
 
-                      {/* Common actions: View + Delete */}
                       <div className="flex gap-1 mt-1">
                         <button
                           className="btn btn-xs btn-info"
@@ -279,7 +267,6 @@ const AllDonationRequests = () => {
         </table>
       </div>
 
-      {/* Pagination */}
       {!isLoading && filteredRequests.length > pageSize && (
         <div className="flex justify-center items-center gap-2 mt-4">
           <button
@@ -310,7 +297,6 @@ const AllDonationRequests = () => {
         </div>
       )}
 
-      {/* View Modal */}
       {selectedRequest && (
         <dialog
           className="modal modal-open"

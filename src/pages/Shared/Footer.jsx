@@ -9,16 +9,12 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10">
 
-          {/* LEFT: LOGO & INFO */}
           <aside className="text-center md:text-left space-y-4">
             <div className="flex justify-center md:justify-start">
               <Logo />
             </div>
 
-            <h2 className="text-xl font-bold text-red-500">
-              Blood Donation
-            </h2>
-
+            <h2 className="text-xl font-bold text-red-700">  Blood Donation </h2>
             <p className="text-sm text-gray-400 max-w-sm">
               Connecting donors and saving lives. Your blood donation can give
               someone a second chance at life.
@@ -29,18 +25,16 @@ const Footer = () => {
             </p>
           </aside>
 
-          {/* CENTER: QUICK LINKS */}
           <div className="text-center md:text-left">
             <h4 className="text-lg font-semibold mb-3">Quick Links</h4>
             <ul className="space-y-2 text-gray-400">
-              <li className="hover:text-red-500 cursor-pointer">Find a Donor</li>
-              <li className="hover:text-red-500 cursor-pointer">Become a Donor</li>
-              <li className="hover:text-red-500 cursor-pointer">Emergency Request</li>
-              <li className="hover:text-red-500 cursor-pointer">Contact Us</li>
+              <li className="hover:text-red-700 cursor-pointer">Find a Donor</li>
+              <li className="hover:text-red-700 cursor-pointer">Become a Donor</li>
+              <li className="hover:text-red-700 cursor-pointer">Emergency Request</li>
+              <li className="hover:text-red-700 cursor-pointer">Contact Us</li>
             </ul>
           </div>
 
-          {/* RIGHT: SOCIAL ICONS */}
           <div className="text-center md:text-right">
             <h4 className="text-lg font-semibold mb-3">Follow Us</h4>
             <div className="flex justify-center md:justify-end gap-5 text-2xl text-gray-600">

@@ -1,12 +1,10 @@
-// src/routes/router.jsx
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layout/RootLayout";
 import Home from "../pages/Home/Home";
 import AuthLayout from "../layout/AuthLayout";
 import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/register";
+import Register from "../pages/Auth/Register";
 import Search from "../pages/PublicPage/Search";
-
 import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/Dashboard/DashBoardHome/DashboardHome";
 import CreateDonationRequest from "../pages/Dashboard/CreateDonationRequest";
@@ -30,11 +28,11 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
 
       {
-        path: "donation-requests",      // public list page
+        path: "donation-requests",   
         Component: DonationRequests,
       },
       {
-        path: "donation-requests/:id",  // private details page
+        path: "donation-requests/:id", 
         element: (
           <PrivateRoute>
             <DonationRequestDetails />
@@ -101,8 +99,6 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, Component: DashboardHome },
-
-      // donor
       {
         path: "create-donation-request",
         Component: CreateDonationRequest,
@@ -151,8 +147,6 @@ export const router = createBrowserRouter([
           return { districts, upazilas };
         },
       },
-
-      // admin only
       {
         path: "all-users",
         element: (
@@ -161,8 +155,6 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-
-      // admin + volunteer (component নিজেই role check করে)
       {
         path: "all-blood-donation-request",
         element: (

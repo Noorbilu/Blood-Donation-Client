@@ -82,7 +82,6 @@ const DonationRequestDetails = () => {
                 Donation Request Details
             </h1>
 
-            {/* Info card */}
             <div className="bg-base-100 shadow rounded-lg p-4 md:p-6 space-y-3 text-sm md:text-base">
                 <div className="grid md:grid-cols-2 gap-4">
                     <div>
@@ -150,7 +149,6 @@ const DonationRequestDetails = () => {
                 )}
             </div>
 
-            {/* Donate button (only when pending and not owner) */}
             {canDonate && (
                 <div className="mt-6">
                     <button
@@ -172,7 +170,6 @@ const DonationRequestDetails = () => {
                 </p>
             )}
 
-            {/* Donate Modal */}
             {donateModalOpen && (
                 <dialog
                     className="modal modal-open"

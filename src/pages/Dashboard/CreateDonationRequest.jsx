@@ -17,10 +17,8 @@ const CreateDonationRequest = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    // from router loader
     const { districts, upazilas } = useLoaderData();
 
-    // watch selected district to filter upazilas
     const recipientDistrict = useWatch({ control, name: "recipientDistrict" });
 
     const upazilasByDistrict = (districtName) => {
@@ -38,7 +36,6 @@ const CreateDonationRequest = () => {
         );
     };
 
-    // ---- LOAD USER PROFILE TO CHECK STATUS (ACTIVE/BLOCKED) ----
     const { data: profile, isLoading: profileLoading } = useQuery({
         queryKey: ["user-profile", user?.email],
         enabled: !!user?.email,
@@ -51,7 +48,6 @@ const CreateDonationRequest = () => {
     const isBlocked = profile?.status === "blocked";
 
     const handleCreateRequest = (data) => {
-        // blocked হলে একদম allow করব না (frontend side)
         if (isBlocked) {
             Swal.fire({
                 icon: "error",
@@ -61,7 +57,6 @@ const CreateDonationRequest = () => {
             return;
         }
 
-        // force requester info from logged in user
         const donationRequest = {
             ...data,
             requesterName: user?.displayName,
@@ -107,7 +102,6 @@ const CreateDonationRequest = () => {
                 })
                 .catch((err) => {
                     console.error(err);
-                    // backend থেকে 403 এলে আলাদা মেসেজ
                     if (err.response?.status === 403) {
                         Swal.fire({
                             icon: "error",
@@ -138,7 +132,6 @@ const CreateDonationRequest = () => {
         <div>
             <h2 className="text-5xl font-bold">Create Donation Request</h2>
 
-            {/* BLOCKED WARNING */}
             {isBlocked && (
                 <div className="mt-4 p-3 rounded bg-red-50 text-red-600 text-sm max-w-3xl">
                     Your account is currently <span className="font-semibold">blocked</span>.
@@ -152,11 +145,9 @@ const CreateDonationRequest = () => {
                 className="mt-12 p-4 text-black"
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    {/* Left column: requester + recipient basic info */}
                     <fieldset className="fieldset">
                         <h4 className="text-2xl font-semibold">Requester & Recipient</h4>
 
-                        {/* requester name (read only) */}
                         <label className="label">Requester Name</label>
                         <input
                             type="text"
@@ -166,8 +157,6 @@ const CreateDonationRequest = () => {
                             className="input w-full"
                             placeholder="Requester Name"
                         />
-
-                        {/* requester email (read only) */}
                         <label className="label mt-4">Requester Email</label>
                         <input
                             type="email"
@@ -178,7 +167,6 @@ const CreateDonationRequest = () => {
                             placeholder="Requester Email"
                         />
 
-                        {/* recipient name */}
                         <label className="label mt-4">Recipient Name</label>
                         <input
                             type="text"
@@ -188,7 +176,6 @@ const CreateDonationRequest = () => {
                             disabled={isBlocked}
                         />
 
-                        {/* recipient district */}
                         <fieldset className="fieldset mt-4">
                             <legend className="fieldset-legend">Recipient District</legend>
                             <select
@@ -208,7 +195,6 @@ const CreateDonationRequest = () => {
                             </select>
                         </fieldset>
 
-                        {/* recipient upazila */}
                         <fieldset className="fieldset mt-4">
                             <legend className="fieldset-legend">Recipient Upazila</legend>
                             <select
@@ -229,11 +215,9 @@ const CreateDonationRequest = () => {
                         </fieldset>
                     </fieldset>
 
-                    {/* Right column: hospital + donation details */}
                     <fieldset className="fieldset">
                         <h4 className="text-2xl font-semibold">Donation Details</h4>
 
-                        {/* hospital name */}
                         <label className="label">Hospital Name</label>
                         <input
                             type="text"
@@ -243,7 +227,6 @@ const CreateDonationRequest = () => {
                             disabled={isBlocked}
                         />
 
-                        {/* full address line */}
                         <label className="label mt-4">Full Address Line</label>
                         <input
                             type="text"
@@ -253,7 +236,6 @@ const CreateDonationRequest = () => {
                             disabled={isBlocked}
                         />
 
-                        {/* blood group */}
                         <fieldset className="fieldset mt-4">
                             <legend className="fieldset-legend">Blood Group</legend>
                             <select
@@ -276,7 +258,6 @@ const CreateDonationRequest = () => {
                             </select>
                         </fieldset>
 
-                        {/* date & time */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <fieldset className="fieldset">
                                 <label className="label">Donation Date</label>
@@ -299,7 +280,6 @@ const CreateDonationRequest = () => {
                             </fieldset>
                         </div>
 
-                        {/* request message */}
                         <label className="label mt-4">Request Message</label>
                         <textarea
                             {...register("requestMessage")}

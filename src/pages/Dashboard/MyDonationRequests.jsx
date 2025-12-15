@@ -12,8 +12,8 @@ const MyDonationRequests = () => {
 
     const [statusFilter, setStatusFilter] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedRequest, setSelectedRequest] = useState(null); // for modal
-    const pageSize = 5; // items per page
+    const [selectedRequest, setSelectedRequest] = useState(null); 
+    const pageSize = 5;
 
     const {
         data: requests = [],
@@ -129,7 +129,6 @@ const MyDonationRequests = () => {
                 </h1>
             </div>
 
-            {/* Filter */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <div className="flex flex-wrap gap-2">
                     {["all", "pending", "inprogress", "done", "canceled"].map(
@@ -157,7 +156,6 @@ const MyDonationRequests = () => {
                 </p>
             </div>
 
-            {/* Table */}
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
                     <thead>
@@ -215,7 +213,6 @@ const MyDonationRequests = () => {
                                     <td>{request.bloodGroup}</td>
                                     <td>{renderStatusBadge(request.status)}</td>
 
-                                    {/* Donor info (when inprogress) */}
                                     <td>
                                         {request.status === "inprogress" &&
                                             request.donorName ? (
@@ -233,11 +230,9 @@ const MyDonationRequests = () => {
                                             </span>
                                         )}
                                     </td>
-
-                                    {/* Actions */}
                                     <td>
                                         <div className="flex flex-col gap-1">
-                                            {/* Done / Cancel buttons only while status === inprogress */}
+                                           
                                             {request.status ===
                                                 "inprogress" && (
                                                     <div className="flex gap-1">
@@ -267,7 +262,7 @@ const MyDonationRequests = () => {
                                                 )}
 
                                             <div className="flex gap-1 mt-1">
-                                                {/* VIEW opens modal now */}
+                                            
                                                 <button
                                                     className="btn btn-xs btn-info"
                                                     onClick={() =>
@@ -279,7 +274,6 @@ const MyDonationRequests = () => {
                                                     View
                                                 </button>
 
-                                                {/* EDIT still navigates */}
                                                 <button
                                                     className="btn btn-xs btn-warning"
                                                     onClick={() =>
@@ -291,7 +285,6 @@ const MyDonationRequests = () => {
                                                     Edit
                                                 </button>
 
-                                                {/* DELETE works as before */}
                                                 <button
                                                     className="btn btn-xs btn-outline btn-error"
                                                     onClick={() =>
@@ -309,7 +302,6 @@ const MyDonationRequests = () => {
                 </table>
             </div>
 
-            {/* Pagination */}
             {!isLoading &&
                 filteredRequests.length > pageSize && (
                     <div className="flex justify-center items-center gap-2 mt-4">
@@ -350,13 +342,10 @@ const MyDonationRequests = () => {
                         </button>
                     </div>
                 )}
-
-            {/* View Modal */}
             {selectedRequest && (
                 <dialog
                     className="modal modal-open"
                     onClick={(e) => {
-                        // close on backdrop click
                         if (e.target === e.currentTarget) {
                             setSelectedRequest(null);
                         }

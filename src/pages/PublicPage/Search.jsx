@@ -20,7 +20,6 @@ const Search = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // District change হলে upazila reset
         if (name === "districtId") {
             setForm((prev) => ({
                 ...prev,
@@ -85,13 +84,11 @@ const Search = () => {
                 Search Blood Donors
             </h1>
 
-            {/* Search Form */}
             <form
                 onSubmit={handleSearch}
                 className="bg-base-100 shadow rounded-lg p-4 md:p-6 space-y-4"
             >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* Blood Group */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">Blood Group</span>
@@ -111,7 +108,6 @@ const Search = () => {
                         </select>
                     </div>
 
-                    {/* District */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">District</span>
@@ -131,7 +127,6 @@ const Search = () => {
                         </select>
                     </div>
 
-                    {/* Upazila */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">Upazila</span>
@@ -172,7 +167,6 @@ const Search = () => {
                 </div>
             </form>
 
-            {/* Results */}
             {hasSearched && (
                 <div className="mt-8">
                     {isSearching && (

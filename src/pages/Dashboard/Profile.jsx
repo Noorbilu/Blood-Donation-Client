@@ -22,7 +22,6 @@ const Profile = () => {
         upazila: "",
     });
 
-    // profile data load
     const {
         data: profile,
         isLoading,
@@ -36,7 +35,6 @@ const Profile = () => {
         },
     });
 
-    // profile আসলে form এ বসাই
     useEffect(() => {
         if (profile) {
             setForm({
@@ -53,7 +51,6 @@ const Profile = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // district বদলালে upazila reset
         if (name === "district") {
             setForm((prev) => ({
                 ...prev,
@@ -81,7 +78,6 @@ const Profile = () => {
         try {
             const payload = {
                 name: form.name,
-                // avatar: form.avatar,  // চাইলে পরে editable করতে পারো
                 bloodGroup: form.bloodGroup,
                 district: form.district,
                 upazila: form.upazila,
@@ -129,7 +125,6 @@ const Profile = () => {
                             type="button"
                             className="btn btn-sm"
                             onClick={() => {
-                                // মূল profile data দিয়ে form reset
                                 setForm({
                                     name: profile.name || "",
                                     email: profile.email || "",
@@ -162,13 +157,11 @@ const Profile = () => {
                     </div>
                 </div>
 
-                {/* Profile form */}
                 <form
                     id="profile-form"
                     onSubmit={handleSave}
                     className="grid grid-cols-1 md:grid-cols-2 gap-4"
                 >
-                    {/* Name */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">Name</span>
@@ -183,7 +176,6 @@ const Profile = () => {
                         />
                     </div>
 
-                    {/* Email (always read-only) */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">Email</span>
@@ -197,7 +189,6 @@ const Profile = () => {
                         />
                     </div>
 
-                    {/* Blood group */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">Blood Group</span>
@@ -218,7 +209,6 @@ const Profile = () => {
                         </select>
                     </div>
 
-                    {/* District */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">District</span>
@@ -239,7 +229,6 @@ const Profile = () => {
                         </select>
                     </div>
 
-                    {/* Upazila */}
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text font-semibold">Upazila</span>

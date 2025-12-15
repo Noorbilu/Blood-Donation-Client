@@ -10,7 +10,7 @@ const DonorDashboardHome = () => {
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
 
-    const [selectedRequest, setSelectedRequest] = useState(null); // modal state
+    const [selectedRequest, setSelectedRequest] = useState(null);
 
     const {
         data: requests = [],
@@ -114,7 +114,6 @@ const DonorDashboardHome = () => {
 
     return (
         <div>
-            {/* Welcome */}
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Welcome, {user?.displayName || "Donor"}
             </h2>
@@ -123,7 +122,6 @@ const DonorDashboardHome = () => {
                 <p className="mt-4">Loading your recent donation requests...</p>
             )}
 
-            {/* Recent donation requests (max 3) */}
             {!isLoading && recentRequests.length > 0 && (
                 <section className="mt-8">
                     <div className="flex items-center justify-between mb-4">
@@ -166,8 +164,6 @@ const DonorDashboardHome = () => {
                                         <td>{request.donationTime}</td>
                                         <td>{request.bloodGroup}</td>
                                         <td>{renderStatusBadge(request.status)}</td>
-
-                                        {/* Donor info (only meaningful when inprogress) */}
                                         <td>
                                             {request.status === "inprogress" && request.donorName ? (
                                                 <div>
@@ -180,11 +176,9 @@ const DonorDashboardHome = () => {
                                                 <span className="text-xs text-gray-400">N/A</span>
                                             )}
                                         </td>
-
-                                        {/* Actions */}
                                         <td>
                                             <div className="flex flex-col gap-1">
-                                                {/* Done / Cancel buttons only while status === inprogress */}
+                                                
                                                 {request.status === "inprogress" && (
                                                     <div className="flex gap-1">
                                                         <button
@@ -205,7 +199,7 @@ const DonorDashboardHome = () => {
                                                 )}
 
                                                 <div className="flex gap-1 mt-1">
-                                                    {/* VIEW now opens modal instead of navigating */}
+                                                    
                                                     <button
                                                         className="btn btn-xs btn-info"
                                                         onClick={() => setSelectedRequest(request)}
@@ -240,7 +234,6 @@ const DonorDashboardHome = () => {
                 </section>
             )}
 
-            {/* View Modal (same style as MyDonationRequests) */}
             {selectedRequest && (
                 <dialog
                     className="modal modal-open"
