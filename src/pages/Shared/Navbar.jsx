@@ -16,12 +16,12 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/donation-requests">Donation Requests</NavLink>
+        <NavLink to="/donation-requests" className="text-red-900 font-semibold">Donation Requests</NavLink>
       </li>
 
       {user && (
         <li>
-          <NavLink to="/funding">Funding</NavLink>
+          <NavLink to="/funding" className="text-red-900 font-semibold">Funding</NavLink>
         </li>
       )}
     </>
@@ -64,7 +64,7 @@ const Navbar = () => {
           <Logo />
         </Link>
       </div>
-      
+
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>

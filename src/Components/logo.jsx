@@ -8,10 +8,7 @@ const Logo = () => {
     <Link to="/">
       <div className="flex items-center">
         <img src={logo} alt="" className="h-20 w-20" />
-        <h3
-          className="text-3xl font-bold -ms-4"
-          style={{ color: "oklch(70.4% 0.191 22.216)" }}
-        >
+        <h3 className="text-red-500 text-3xl font-bold -ms-4">
           RedHope
         </h3>
       </div>
