@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
         loader: async ({ params }) => {
           const { id } = params;
           const donation = await fetch(
-            `http://localhost:3000/donation-requests/${id}`
+            `https://blood-donation-server-neon.vercel.app/donation-requests/${id}`
           ).then((res) => res.json());
           return { donation };
         },
@@ -120,7 +120,7 @@ export const router = createBrowserRouter([
           const { id } = params;
 
           const donation = await fetch(
-            `http://localhost:3000/donation-requests/${id}`
+            `https://blood-donation-server-neon.vercel.app/donation-requests/${id}`
           ).then((res) => res.json());
 
           const districts = await fetch("/districts.json").then((res) =>

@@ -75,7 +75,7 @@ const Register = () => {
       };
 
       const baseURL =
-        import.meta.env.VITE_API_URL || "http://localhost:3000";
+        import.meta.env.VITE_API_URL || "https://blood-donation-server-neon.vercel.app";
 
       await axios.post(`${baseURL}/users`, newUser);
       Swal.fire({
