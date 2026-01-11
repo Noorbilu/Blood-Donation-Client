@@ -1,28 +1,32 @@
-import React from "react";
+import React from "react"; 
 import { Link, NavLink, Outlet } from "react-router";
 import { IoCreateOutline } from "react-icons/io5";
 import { IoMdGitPullRequest } from "react-icons/io";
 import { SiGoogletasks } from "react-icons/si";
-import { FaHome, FaUser } from "react-icons/fa";
-
-import useRole from "../hooks/useRole";
+import { FaHome, FaUser, FaMoneyBill } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const { role, roleLoading } = useRole();
 
+  // Display role for header
+  const displayRole =
+    role === "admin" ? "Admin" : role === "volunteer" ? "Manager" : "User";
+
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+
+      {/* Content */}
       <div className="drawer-content">
-        
+        {/* Top bar (mobile) */}
         <nav className="navbar w-full bg-base-300">
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
             className="btn btn-square btn-ghost lg:hidden"
           >
-          
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -38,31 +42,41 @@ const DashboardLayout = () => {
               <path d="M14 10l2 2l-2 2"></path>
             </svg>
           </label>
-          <div className="px-4 font-semibold">Blood Donation Dashboard</div>
+          <div className="px-4 font-semibold">
+            Blood Donation Dashboard •{" "}
+            <span className="opacity-70">{displayRole}</span>
+          </div>
         </nav>
 
-        
+        {/* Routed content */}
         <div className="p-4 md:p-6">
-          <Outlet />
+          {roleLoading ? (
+            <div className="flex justify-center items-center py-10">
+              <span className="loading loading-spinner loading-lg" />
+            </div>
+          ) : (
+            <Outlet />
+          )}
         </div>
       </div>
 
+      {/* Sidebar */}
       <div className="drawer-side is-drawer-close:overflow-visible">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="flex min-height-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-          
+
+        <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
           <ul className="menu w-full grow">
+            {/* Home */}
             <li>
               <Link
                 to="/"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
-                
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -80,6 +94,7 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
+            {/* Dashboard home */}
             <li>
               <NavLink
                 to="/dashboard"
@@ -90,6 +105,8 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Dashboard Home</span>
               </NavLink>
             </li>
+
+            {/* Profile */}
             <li>
               <NavLink
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -97,12 +114,11 @@ const DashboardLayout = () => {
                 to="/dashboard/profile"
               >
                 <CgProfile />
-                <span className="is-drawer-close:hidden">
-                  Profile
-                </span>
+                <span className="is-drawer-close:hidden">Profile</span>
               </NavLink>
             </li>
-            
+
+            {/* Role-specific sections */}
             {roleLoading && (
               <li>
                 <span className="flex items-center gap-2">
@@ -112,10 +128,11 @@ const DashboardLayout = () => {
               </li>
             )}
 
+            {/* Donor */}
             {!roleLoading && role === "donor" && (
               <>
                 <li className="mt-2 menu-title is-drawer-close:hidden">
-                  <span>Donor</span>
+                  <span>User</span>
                 </li>
                 <li>
                   <NavLink
@@ -144,12 +161,12 @@ const DashboardLayout = () => {
               </>
             )}
 
+            {/* Admin */}
             {!roleLoading && role === "admin" && (
               <>
                 <li className="mt-2 menu-title is-drawer-close:hidden">
                   <span>Admin</span>
                 </li>
-
                 <li>
                   <NavLink
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -160,7 +177,6 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">All Users</span>
                   </NavLink>
                 </li>
-
                 <li>
                   <NavLink
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -173,15 +189,25 @@ const DashboardLayout = () => {
                     </span>
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Funding"
+                    to="/dashboard/funding"
+                  >
+                    <FaMoneyBill />
+                    <span className="is-drawer-close:hidden">Funding</span>
+                  </NavLink>
+                </li>
               </>
             )}
 
+            {/* Volunteer (Manager) */}
             {!roleLoading && role === "volunteer" && (
               <>
                 <li className="mt-2 menu-title is-drawer-close:hidden">
-                  <span>Volunteer</span>
+                  <span>Manager</span>
                 </li>
-
                 <li>
                   <NavLink
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -194,9 +220,20 @@ const DashboardLayout = () => {
                     </span>
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Funding"
+                    to="/dashboard/funding"
+                  >
+                    <FaMoneyBill />
+                    <span className="is-drawer-close:hidden">Funding</span>
+                  </NavLink>
+                </li>
               </>
             )}
 
+            {/* Footer button in sidebar */}
             <li className="mt-auto">
               <button
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"

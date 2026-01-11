@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Link } from "react-router";
 
 const featuresData = [
   {
@@ -32,36 +33,45 @@ const BloodDonationFeatures = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFeature = (index) => {
-    if (openIndex === index) {
-      setOpenIndex(null);
-    } else {
-      setOpenIndex(index);
-    }
+    setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   return (
-    <section className="py-20 px-6 bg-red-50">
+    <section className="py-20 px-6 bg-base-200">
       <div className="max-w-6xl mx-auto text-center mb-14">
-        <h2 className="text-4xl md:text-5xl font-bold text-red-700 mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">
           Blood Donation Features
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <p className="text-base-content/70 max-w-2xl mx-auto">
           Learn more about the key aspects and benefits of blood donation.
         </p>
       </div>
 
       <div className="max-w-4xl mx-auto space-y-4">
         {featuresData.map((feature, index) => (
-          <div key={index} className="bg-white rounded-2xl shadow-md">
+          <div
+            key={index}
+            className="bg-base-100 rounded-2xl shadow-md border border-base-300"
+          >
             <button
               onClick={() => toggleFeature(index)}
-              className="w-full flex justify-between items-center p-4 border-b border-gray-200 focus:outline-none"
+              className="w-full flex justify-between items-center p-4 focus:outline-none"
             >
-              <span className="text-gray-800 font-medium">{feature.question}</span>
-              <span>{openIndex === index ? '-' : '+'}</span>
+              <span className="text-base-content font-medium">
+                {feature.question}
+              </span>
+
+              <span
+                className={`text-xl font-bold text-primary transition-transform ${
+                  openIndex === index ? "rotate-0" : "rotate-0"
+                }`}
+              >
+                {openIndex === index ? "−" : "+"}
+              </span>
             </button>
+
             {openIndex === index && (
-              <div className="p-4 text-gray-600">
+              <div className="p-4 pt-0 text-base-content/70 border-t border-base-300">
                 {feature.answer}
               </div>
             )}
@@ -70,9 +80,11 @@ const BloodDonationFeatures = () => {
       </div>
 
       <div className="text-center mt-8">
-        <button className="px-6 py-3 bg-red-600 text-white rounded-3xl hover:bg-red-700 transition duration-300">
-          See More Features
+        <Link to='/about'>
+        <button className="btn btn-primary rounded-3xl px-6">
+          See More About Us
         </button>
+        </Link>
       </div>
     </section>
   );

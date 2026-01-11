@@ -12,13 +12,16 @@ import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
 import Funding from "../pages/Funding/Funding";
 import EditDonationRequest from "../pages/Dashboard/EditDonationRequest";
 import AdminRoute from "./AdminRoute";
-import VolunteerRoute from "./VolunteerRoute";
 import AllUsers from "../pages/Dashboard/Admin/AllUsers";
 import AllDonationRequests from "../pages/Dashboard/Admin/AllDonationRequests";
 import DashboardLayout from "../layout/DashboardLayout";
 import DonationRequests from "../pages/PublicPage/DonationRequests";
 import DonationRequestDetails from "../pages/PublicPage/DonationRequestDetails";
 import Profile from "../pages/Dashboard/Profile";
+import About from "../pages/About/About";
+import BlogDetails from "../pages/Blog/BlogDetails";
+import BlogList from "../pages/Blog/BlogList";
+import Privacy from "../pages/Privacy/Privacy";
 
 export const router = createBrowserRouter([
   {
@@ -64,9 +67,25 @@ export const router = createBrowserRouter([
         path: "funding",
         element: (
           <PrivateRoute>
-            <Funding />
+            <Funding></Funding>
           </PrivateRoute>
         ),
+      },
+      {
+        path: "about",
+        element:<About></About>,
+      },
+      {
+        path: "privacy",
+        element:<Privacy></Privacy>,
+      },
+      {
+        path: "blog",
+        element:<BlogList></BlogList>,
+      },
+      {
+        path: "blog/:slug",
+        element:<BlogDetails></BlogDetails>,
       },
     ],
   },
@@ -161,6 +180,14 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <AllDonationRequests />
           </PrivateRoute>
+        ),
+      },
+      {
+        path: "funding",
+        element: (
+          <AdminRoute>
+            <Funding />
+          </AdminRoute>
         ),
       },
     ],

@@ -31,31 +31,30 @@ const Banner = () => {
   }, [paused]);
 
   return (
-    <div className="relative w-full bg-red-50 ">
-      <News></News>
+    <div className="relative w-full bg-base-200">
+      <News />
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="text-center mb-8 px-4"
       >
-        
-        <h1 className="text-4xl md:text-6xl font-extrabold text-red-500">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-primary">
           Donate Blood, Save Lives
         </h1>
-        <p className="mt-4 text-lg text-red-800 font-semibold">
+        <p className="mt-4 text-lg text-base-content font-semibold">
           A single donation can make a world of difference ❤️
         </p>
 
         <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
           <Link to="register">
-            <button className="btn btn-primary text-black rounded-2xl px-6">
+            <button className="btn btn-primary text-primary-content rounded-2xl px-6">
               Join as a Donor
             </button>
           </Link>
 
           <Link to="search">
-            <button className="btn rounded-2xl px-6">
+            <button className="btn btn-outline btn-primary rounded-2xl px-6">
               Search Donors
             </button>
           </Link>
@@ -86,14 +85,14 @@ const Banner = () => {
           onClick={() =>
             setCurrent((current - 1 + slides.length) % slides.length)
           }
-          className="btn btn-circle absolute left-5 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white"
+          className="btn btn-circle absolute left-5 top-1/2 -translate-y-1/2 bg-base-100/70 hover:bg-base-100 text-base-content border-none"
         >
           ❮
         </button>
 
         <button
           onClick={() => setCurrent((current + 1) % slides.length)}
-          className="btn btn-circle absolute right-5 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white"
+          className="btn btn-circle absolute right-5 top-1/2 -translate-y-1/2 bg-base-100/70 hover:bg-base-100 text-base-content border-none"
         >
           ❯
         </button>
@@ -103,8 +102,8 @@ const Banner = () => {
             <button
               key={index}
               onClick={() => setCurrent(index)}
-              className={`w-3 h-3 rounded-full ${
-                index === current ? "bg-white" : "bg-white/40"
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === current ? "bg-primary" : "bg-base-content/40"
               }`}
             />
           ))}

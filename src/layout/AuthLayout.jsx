@@ -12,7 +12,7 @@ const AuthLayout = () => {
           <Outlet></Outlet>
         </div>
         <div className="flex-1">
-            <img src={image} alt="" />
+          <img src={image} alt="" />
         </div>
       </div>
     </div>

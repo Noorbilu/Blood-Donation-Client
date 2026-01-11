@@ -60,7 +60,7 @@ const Search = () => {
                 upazila: upazila?.name || "",
             }).toString();
 
-            const baseURL = import.meta.env.VITE_API_URL || "https://blood-donation-server-neon.vercel.app";
+            const baseURL = import.meta.env.VITE_API_URL || "https://red-hope-server-alpha.vercel.app";
             const res = await fetch(`${baseURL}/users?${params}`);
 
             if (!res.ok) {

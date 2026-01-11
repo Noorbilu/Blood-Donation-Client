@@ -24,16 +24,16 @@ const Register = () => {
   const [filteredUpazila, setFilteredUpazila] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const isPasswordValid = (password) => {
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-    const hasMinLength = password.length >= 6;
-    const hasSymbol = /[^A-Za-z0-9]/.test(password); 
-
-    return hasUppercase && hasLowercase && hasMinLength && hasSymbol;
+    return (
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /[^A-Za-z0-9]/.test(password) &&
+      password.length >= 6
+    );
   };
-
 
   const handleDistrictChange = (e) => {
     const selectedDistrict = e.target.value;
@@ -44,23 +44,32 @@ const Register = () => {
 
   const handleRegistration = async (data) => {
     try {
-      const profileImg = data.photo[0];
+      setLoading(true);
+
+      // 1️⃣ Firebase registration
       await registerUser(data.email, data.password);
+
+      // 2️⃣ Upload image
       let photoURL = "";
-      if (profileImg) {
+      if (data.photo?.[0]) {
         const formData = new FormData();
-        formData.append("image", profileImg);
+        formData.append("image", data.photo[0]);
 
-        const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key
-          }`;
+        const imgRes = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`,
+          formData
+        );
 
-        const imgRes = await axios.post(image_API_URL, formData);
         photoURL = imgRes.data.data.url;
       }
+
+      // 3️⃣ Update Firebase profile
       await updateUserProfile({
         displayName: data.name,
         photoURL,
       });
+
+      // 4️⃣ Prepare backend user
       const selectedDistrict = districts.find(
         (d) => d.id == data.district
       );
@@ -74,10 +83,16 @@ const Register = () => {
         upazila: data.upazila,
       };
 
-      const baseURL =
-        import.meta.env.VITE_API_URL || "https://blood-donation-server-neon.vercel.app";
+      // 5️⃣ Save to backend (DO NOT BLOCK USER)
+      const baseURL = import.meta.env.VITE_API_URL;
 
-      await axios.post(`${baseURL}/users`, newUser);
+      axios
+        .post(`${baseURL}/users`, newUser)
+        .catch((err) =>
+          console.warn("Backend user save failed:", err.message)
+        );
+
+      // 6️⃣ Success alert + redirect
       Swal.fire({
         icon: "success",
         title: "Registration Successful!",
@@ -87,6 +102,7 @@ const Register = () => {
       });
 
       navigate(location.state || "/dashboard");
+
     } catch (err) {
       console.error("Registration error:", err);
       Swal.fire({
@@ -94,48 +110,45 @@ const Register = () => {
         title: "Registration Failed",
         text: err.message || "Something went wrong. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="card bg-base-100 w-full mx-auto max-w-md shadow-2xl p-6">
       <h3 className="text-3xl font-semibold text-center">
-        Welcome to Blood Donation
+        Join Blood Donation Community 🩸
       </h3>
-      <p className="text-center text-gray-500 mb-4">Please Register</p>
+      <p className="text-center text-gray-500 mb-4">Create your account</p>
 
       <form className="space-y-4" onSubmit={handleSubmit(handleRegistration)}>
-        
-        <div>
-          <input
-            {...register("name", {
-              required: "Name is required",
-              minLength: {
-                value: 5,
-                message: "Name should be at least 5 characters",
-              },
-            })}
-            className="input input-bordered w-full"
-            placeholder="Your Name"
-          />
-          {errors.name && (
-            <p className="text-red-500 text-xs">{errors.name.message}</p>
-          )}
-        </div>
+        {/* Name */}
+        <input
+          {...register("name", {
+            required: "Name is required",
+            minLength: { value: 5, message: "Minimum 5 characters" },
+          })}
+          className="input input-bordered w-full"
+          placeholder="Your Name"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-xs">{errors.name.message}</p>
+        )}
 
-        <div>
-          <input
-            type="file"
-            {...register("photo", { required: "Photo is required" })}
-            className="file-input file-input-bordered w-full"
-          />
-          {errors.photo && (
-            <p className="text-red-500 text-xs">{errors.photo.message}</p>
-          )}
-        </div>
+        {/* Photo */}
+        <input
+          type="file"
+          {...register("photo", { required: "Photo is required" })}
+          className="file-input file-input-bordered w-full"
+        />
+        {errors.photo && (
+          <p className="text-red-500 text-xs">{errors.photo.message}</p>
+        )}
 
+        {/* Blood Group */}
         <select
-          {...register("bloodGroup", { required: "Blood group is required" })}
+          {...register("bloodGroup", { required: "Blood group required" })}
           className="select select-bordered w-full"
         >
           <option value="">Select Blood Group</option>
@@ -145,14 +158,10 @@ const Register = () => {
             </option>
           ))}
         </select>
-        {errors.bloodGroup && (
-          <p className="text-red-500 text-xs">
-            {errors.bloodGroup.message}
-          </p>
-        )}
 
+        {/* District */}
         <select
-          {...register("district", { required: "District is required" })}
+          {...register("district", { required: "District required" })}
           onChange={handleDistrictChange}
           className="select select-bordered w-full"
         >
@@ -164,8 +173,9 @@ const Register = () => {
           ))}
         </select>
 
+        {/* Upazila */}
         <select
-          {...register("upazila", { required: "Upazila is required" })}
+          {...register("upazila", { required: "Upazila required" })}
           className="select select-bordered w-full"
           disabled={!filteredUpazila.length}
         >
@@ -177,25 +187,24 @@ const Register = () => {
           ))}
         </select>
 
-       
+        {/* Email */}
         <input
           type="email"
-          {...register("email", { required: "Email is required" })}
+          {...register("email", { required: "Email required" })}
           className="input input-bordered w-full"
           placeholder="Email"
         />
 
-        
+        {/* Password */}
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
             {...register("password", {
-              required: "Password is required",
-              validate: (value) =>
-                isPasswordValid(value) ||
-                "Password must be at least 6 characters and include uppercase, lowercase, and a special character.",
+              required: "Password required",
+              validate: (v) =>
+                isPasswordValid(v) ||
+                "Min 6 chars, uppercase, lowercase & symbol required",
             })}
-
             className="input input-bordered w-full pr-10"
             placeholder="Password"
           />
@@ -209,13 +218,14 @@ const Register = () => {
         {errors.password && (
           <p className="text-red-500 text-xs">{errors.password.message}</p>
         )}
+
+        {/* Confirm Password */}
         <div className="relative">
           <input
             type={showConfirmPass ? "text" : "password"}
             {...register("confirmPassword", {
-              required: "Confirm password is required",
-              validate: (value) =>
-                value === watch("password") || "Passwords do not match",
+              validate: (v) =>
+                v === watch("password") || "Passwords do not match",
             })}
             className="input input-bordered w-full pr-10"
             placeholder="Confirm Password"
@@ -227,14 +237,12 @@ const Register = () => {
             {showConfirmPass ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
-        {errors.confirmPassword && (
-          <p className="text-red-500 text-xs">
-            {errors.confirmPassword.message}
-          </p>
-        )}
 
-        <button className="btn btn-neutral w-full mt-4">
-          Register
+        <button
+          disabled={loading}
+          className="btn btn-neutral w-full mt-2"
+        >
+          {loading ? "Registering..." : "Register"}
         </button>
       </form>
 
