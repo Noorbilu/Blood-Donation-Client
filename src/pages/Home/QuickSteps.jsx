@@ -18,7 +18,7 @@ const steps = [
   {
     title: "Save Lives",
     description:
-      "Donate blood and become someone’s reason to live another day.",
+      "Donate blood and become someone's reason to live another day.",
     icon: Heart,
   },
 ];
@@ -26,7 +26,7 @@ const steps = [
 const QuickSteps = () => {
   return (
     <section className="relative py-16 px-6 bg-base-200 overflow-hidden">
-      {/* subtle background accent */}
+     
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(248,113,113,0.15),transparent_60%)]" />
 
       <div className="max-w-6xl mx-auto text-center mb-14">
@@ -65,7 +65,7 @@ const QuickSteps = () => {
               }}
               className="relative bg-base-100 rounded-3xl p-8 border border-base-300 text-center transition-all"
             >
-              {/* step badge */}
+              
               <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md">
                 {index + 1}
               </div>

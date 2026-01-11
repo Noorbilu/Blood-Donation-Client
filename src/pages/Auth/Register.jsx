@@ -45,11 +45,8 @@ const Register = () => {
   const handleRegistration = async (data) => {
     try {
       setLoading(true);
-
-      // 1️⃣ Firebase registration
       await registerUser(data.email, data.password);
 
-      // 2️⃣ Upload image
       let photoURL = "";
       if (data.photo?.[0]) {
         const formData = new FormData();
@@ -63,13 +60,12 @@ const Register = () => {
         photoURL = imgRes.data.data.url;
       }
 
-      // 3️⃣ Update Firebase profile
       await updateUserProfile({
         displayName: data.name,
         photoURL,
       });
 
-      // 4️⃣ Prepare backend user
+  
       const selectedDistrict = districts.find(
         (d) => d.id == data.district
       );
@@ -83,7 +79,7 @@ const Register = () => {
         upazila: data.upazila,
       };
 
-      // 5️⃣ Save to backend (DO NOT BLOCK USER)
+  
       const baseURL = import.meta.env.VITE_API_URL;
 
       axios
@@ -92,7 +88,6 @@ const Register = () => {
           console.warn("Backend user save failed:", err.message)
         );
 
-      // 6️⃣ Success alert + redirect
       Swal.fire({
         icon: "success",
         title: "Registration Successful!",
@@ -123,7 +118,7 @@ const Register = () => {
       <p className="text-center text-gray-500 mb-4">Create your account</p>
 
       <form className="space-y-4" onSubmit={handleSubmit(handleRegistration)}>
-        {/* Name */}
+        
         <input
           {...register("name", {
             required: "Name is required",
@@ -136,7 +131,7 @@ const Register = () => {
           <p className="text-red-500 text-xs">{errors.name.message}</p>
         )}
 
-        {/* Photo */}
+       
         <input
           type="file"
           {...register("photo", { required: "Photo is required" })}
@@ -146,7 +141,7 @@ const Register = () => {
           <p className="text-red-500 text-xs">{errors.photo.message}</p>
         )}
 
-        {/* Blood Group */}
+        
         <select
           {...register("bloodGroup", { required: "Blood group required" })}
           className="select select-bordered w-full"
@@ -159,7 +154,7 @@ const Register = () => {
           ))}
         </select>
 
-        {/* District */}
+
         <select
           {...register("district", { required: "District required" })}
           onChange={handleDistrictChange}
@@ -173,7 +168,7 @@ const Register = () => {
           ))}
         </select>
 
-        {/* Upazila */}
+     
         <select
           {...register("upazila", { required: "Upazila required" })}
           className="select select-bordered w-full"
@@ -187,7 +182,7 @@ const Register = () => {
           ))}
         </select>
 
-        {/* Email */}
+       
         <input
           type="email"
           {...register("email", { required: "Email required" })}
@@ -195,7 +190,7 @@ const Register = () => {
           placeholder="Email"
         />
 
-        {/* Password */}
+     
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
@@ -219,7 +214,7 @@ const Register = () => {
           <p className="text-red-500 text-xs">{errors.password.message}</p>
         )}
 
-        {/* Confirm Password */}
+     
         <div className="relative">
           <input
             type={showConfirmPass ? "text" : "password"}

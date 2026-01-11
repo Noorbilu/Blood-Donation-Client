@@ -64,9 +64,9 @@ const Navbar = () => {
 
   return (
     <div className="navbar sticky top-0 z-50 bg-base-100/90 backdrop-blur-md shadow-sm transition-colors duration-300">
-      {/* Navbar Start */}
+     
       <div className="navbar-start">
-        {/* Mobile Dropdown */}
+        
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -92,21 +92,21 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Logo */}
+    
         <Link to="/" className="text-xl font-bold">
           <Logo />
         </Link>
       </div>
 
-      {/* Navbar Center (Desktop) */}
+     
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
 
-      {/* Navbar End */}
+    
       <div className="navbar-end">
         <div className="flex items-center gap-4">
-          {/* Theme Toggle */}
+       
           <button
             onClick={toggleTheme}
             className="btn btn-ghost btn-circle"

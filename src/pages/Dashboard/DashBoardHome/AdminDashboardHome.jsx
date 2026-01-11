@@ -15,7 +15,7 @@ import {
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-// ✅ Register chart.js components
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -59,7 +59,7 @@ const AdminDashboardHome = () => {
     },
   });
 
-  // 🔵 Status Pie Chart
+  
   const statusData = useMemo(() => {
     const map = { pending: 0, inprogress: 0, done: 0, canceled: 0 };
     reqs.forEach(r => (map[r.status] = (map[r.status] || 0) + 1));
@@ -75,7 +75,7 @@ const AdminDashboardHome = () => {
     };
   }, [reqs]);
 
-  // 🔴 Line Chart (Requests by day)
+ 
   const timeData = useMemo(() => {
     const byDate = {};
     reqs.forEach(r => {
@@ -103,7 +103,7 @@ const AdminDashboardHome = () => {
     };
   }, [reqs]);
 
-  // 🩸 Bar Chart (Blood Groups)
+
   const bloodData = useMemo(() => {
     const groups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
     const counts = groups.map(g => reqs.filter(r => r.bloodGroup === g).length);
@@ -122,7 +122,7 @@ const AdminDashboardHome = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+    
       <div className="bg-base-100 shadow rounded-lg p-4 md:p-6">
         <h1 className="text-2xl md:text-3xl font-bold">
           Welcome back, {user?.displayName || "Admin"}
@@ -132,7 +132,7 @@ const AdminDashboardHome = () => {
         </p>
       </div>
 
-      {/* Stats */}
+     
       {isLoading ? (
         <div className="flex justify-center py-10">
           <span className="loading loading-spinner loading-lg" />
@@ -162,9 +162,9 @@ const AdminDashboardHome = () => {
         </div>
       )}
 
-      {/* Charts */}
+   
       <div className="grid lg:grid-cols-3 gap-4">
-        {/* Line Chart */}
+       
         <div className="card p-4 lg:col-span-2 h-64">
           <b className="block mb-2">Requests (by day)</b>
           <Line
@@ -173,7 +173,7 @@ const AdminDashboardHome = () => {
           />
         </div>
 
-        {/* Pie Chart */}
+
         <div className="card p-4 h-64">
           <b className="block mb-2">Status distribution</b>
           <Pie
@@ -182,7 +182,7 @@ const AdminDashboardHome = () => {
           />
         </div>
 
-        {/* Bar Chart */}
+     
         <div className="card p-4 lg:col-span-3 h-64">
           <b className="block mb-2">By blood group</b>
           <Bar

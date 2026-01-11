@@ -30,7 +30,7 @@ const HowItWorks = () => {
 
   return (
     <section className="relative py-24 px-6 bg-gradient-to-b from-base-100 via-base-200 to-base-100 overflow-hidden">
-      {/* soft glow background (works in both themes) */}
+     
       <div className="absolute inset-0 -z-10 opacity-20 bg-[radial-gradient(circle_at_top_right,rgba(248,113,113,0.18),transparent_55%)]" />
 
       <h2 className="text-4xl md:text-5xl font-bold text-center mb-14 text-primary tracking-tight">

@@ -8,7 +8,7 @@ const normalizeRole = (raw) => {
   if (r === "admin") return { role: "admin", uiRole: "admin", displayRole: "Admin" };
   if (r === "volunteer" || r === "manager")
     return { role: "volunteer", uiRole: "manager", displayRole: "Manager" };
-  // default donor/user -> "user"
+  
   return { role: "donor", uiRole: "user", displayRole: "User" };
 };
 
@@ -26,11 +26,11 @@ const useRole = () => {
     refetchOnWindowFocus: false,
     queryFn: async () => {
       try {
-        // 1) Preferred: dedicated role endpoint
+       
         const res = await axiosSecure.get(`/users/${email}/role`);
         return normalizeRole(res?.data?.role);
       } catch (_) {
-        // 2) Fallback: profile endpoint with role in payload
+        
         const res = await axiosSecure.get(`/users/profile/${email}`);
         return normalizeRole(res?.data?.role);
       }
@@ -38,9 +38,9 @@ const useRole = () => {
   });
 
   const normalized = data || normalizeRole("donor");
-  const role = normalized.role; // 'donor' | 'volunteer' | 'admin'
-  const uiRole = normalized.uiRole; // 'user' | 'manager' | 'admin'
-  const displayRole = normalized.displayRole; // 'User' | 'Manager' | 'Admin'
+  const role = normalized.role; 
+  const uiRole = normalized.uiRole; 
+  const displayRole = normalized.displayRole; 
 
   const isAdmin = uiRole === "admin";
   const isManager = uiRole === "manager";

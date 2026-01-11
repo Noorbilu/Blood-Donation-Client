@@ -100,14 +100,14 @@ const DonorDashboardHome = () => {
             </button>
           </div>
 
-          {/* SUPER SHORT, FLAT LIST (NO BIG BOXES) */}
+       
           <div className="divide-y divide-gray-100 border border-gray-100 rounded-md bg-white text-[11px]">
             {recentRequests.map((request, index) => (
               <div
                 key={request._id}
                 className="flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-gray-50"
               >
-                {/* Left: tiny info line */}
+            
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-[10px] text-gray-400 w-4 text-right">
                     {index + 1}.
@@ -121,7 +121,7 @@ const DonorDashboardHome = () => {
                   {renderStatusBadge(request.status)}
                 </div>
 
-                {/* Right: minimal actions */}
+               
                 <div className="flex items-center gap-1 shrink-0">
                   {request.status === "inprogress" && (
                     <>
@@ -166,7 +166,7 @@ const DonorDashboardHome = () => {
         </section>
       )}
 
-      {/* Small modal for details */}
+      
       {selectedRequest && (
         <dialog
           className="modal modal-open"

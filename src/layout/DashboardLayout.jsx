@@ -10,7 +10,7 @@ import useRole from "../hooks/useRole";
 const DashboardLayout = () => {
   const { role, roleLoading } = useRole();
 
-  // Display role for header
+  
   const displayRole =
     role === "admin" ? "Admin" : role === "volunteer" ? "Manager" : "User";
 
@@ -18,9 +18,9 @@ const DashboardLayout = () => {
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
-      {/* Content */}
+     
       <div className="drawer-content">
-        {/* Top bar (mobile) */}
+        
         <nav className="navbar w-full bg-base-300">
           <label
             htmlFor="my-drawer-4"
@@ -48,7 +48,7 @@ const DashboardLayout = () => {
           </div>
         </nav>
 
-        {/* Routed content */}
+       
         <div className="p-4 md:p-6">
           {roleLoading ? (
             <div className="flex justify-center items-center py-10">
@@ -60,7 +60,7 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-      {/* Sidebar */}
+
       <div className="drawer-side is-drawer-close:overflow-visible">
         <label
           htmlFor="my-drawer-4"
@@ -70,7 +70,7 @@ const DashboardLayout = () => {
 
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
           <ul className="menu w-full grow">
-            {/* Home */}
+            
             <li>
               <Link
                 to="/"
@@ -94,7 +94,7 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
-            {/* Dashboard home */}
+            
             <li>
               <NavLink
                 to="/dashboard"
@@ -106,7 +106,7 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
 
-            {/* Profile */}
+          
             <li>
               <NavLink
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -118,7 +118,7 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
 
-            {/* Role-specific sections */}
+           
             {roleLoading && (
               <li>
                 <span className="flex items-center gap-2">
@@ -128,7 +128,7 @@ const DashboardLayout = () => {
               </li>
             )}
 
-            {/* Donor */}
+           
             {!roleLoading && role === "donor" && (
               <>
                 <li className="mt-2 menu-title is-drawer-close:hidden">
@@ -161,7 +161,7 @@ const DashboardLayout = () => {
               </>
             )}
 
-            {/* Admin */}
+            
             {!roleLoading && role === "admin" && (
               <>
                 <li className="mt-2 menu-title is-drawer-close:hidden">
@@ -202,7 +202,7 @@ const DashboardLayout = () => {
               </>
             )}
 
-            {/* Volunteer (Manager) */}
+            
             {!roleLoading && role === "volunteer" && (
               <>
                 <li className="mt-2 menu-title is-drawer-close:hidden">
@@ -233,7 +233,7 @@ const DashboardLayout = () => {
               </>
             )}
 
-            {/* Footer button in sidebar */}
+           
             <li className="mt-auto">
               <button
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"

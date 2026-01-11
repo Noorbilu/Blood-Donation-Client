@@ -59,7 +59,7 @@ const Impact = () => {
               }}
               className="relative bg-base-200/70 backdrop-blur-md border border-base-300 rounded-3xl p-8 text-center shadow-sm hover:bg-base-200/90 transition-all"
             >
-              {/* Icon bubble */}
+              
               <div className="flex justify-center mb-4">
                 <div className="bg-base-100 p-4 rounded-full border border-base-300 shadow-md">
                   <item.icon className="w-8 h-8 text-primary" />

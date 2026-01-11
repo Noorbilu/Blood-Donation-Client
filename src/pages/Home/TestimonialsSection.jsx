@@ -26,7 +26,7 @@ const TestimonialsSection = () => {
   return (
     <section className="py-20 bg-base-200">
       <div className="max-w-6xl mx-auto px-6">
-        {/* Heading */}
+        
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +37,7 @@ const TestimonialsSection = () => {
         </motion.h2>
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Left: Big Highlights */}
+    
           <div className="space-y-8">
             {highlights.map((item, i) => (
               <motion.div
@@ -57,7 +57,6 @@ const TestimonialsSection = () => {
             ))}
           </div>
 
-          {/* Right: Human Stories */}
           <div className="space-y-8">
             {testimonials.map((t, i) => (
               <motion.blockquote
